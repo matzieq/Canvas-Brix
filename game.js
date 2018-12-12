@@ -14,6 +14,8 @@ var PADDLE_WIDTH = 100;
 var PADDLE_THICKNESS = 10;
 var PADDLE_DIST_FROM_EDGE = 60;
 var paddleX = 400;
+var mouseX;
+var mouseY;
 
 setInterval(update, 1000 / framesPerSecond);
 
@@ -22,7 +24,9 @@ canvas.addEventListener('mousemove', handleMouse);
 function handleMouse (event) {
     var rect = canvas.getBoundingClientRect();
     var root = document.documentElement;
-    var mouseX = event.clientX - rect.left - root.scrollLeft;
+    mouseX = event.clientX - rect.left - root.scrollLeft;
+    mouseY = event.clientY - rect.top - root.scrollTop;
+    
     paddleX = mouseX - PADDLE_WIDTH / 2;
     // paddleY = mouseY - rect.top - root.scrollTop;
 }
@@ -79,6 +83,7 @@ function drawStuff() {
     colorRect(0, 0, canvas.width, canvas.height, '#000');  
     colorCircle(ballX, ballY, 10, '#fff');
     colorRect(paddleX, canvas.height - PADDLE_DIST_FROM_EDGE, PADDLE_WIDTH, PADDLE_THICKNESS);
+    colorText(mouseX + ', ' + mouseY, mouseX, mouseY, '#fff');
 }
 
 function colorRect(x, y, width, height, color) {
@@ -91,4 +96,9 @@ function colorCircle(x, y, radius, color) {
     canvasContext.beginPath();
     canvasContext.arc(x, y, radius, 0, Math.PI * 2, true);
     canvasContext.fill();  
+}
+
+function colorText(textToShow, textX, textY, color) {
+    canvasContext.fillStyle = color;
+    canvasContext.fillText(textToShow, textX, textY);
 }
